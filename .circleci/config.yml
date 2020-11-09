@@ -26,8 +26,11 @@ jobs:
       - attach_workspace:
           at: .
       - add_ssh_keys:
+          # find the key from CirclCi project settings > SSH Keys > Additional SSH Keys
+          # you also need to set this as a deploy key in Github repo
+          # for a new one, use: `ssh-keygen -t rsa -b 4096 -C "musings.tommilligan@circleci.com" -f key -m pem`
           fingerprints:
-            - "27:02:81:b0:7a:82:e9:39:32:e5:39:65:e5:d8:a5:70"
+            - "cd:cf:ac:cd:ca:41:3a:99:bf:73:f3:ba:18:5b:28:f3"
       - run: ./dev/gh-pages
 workflows:
   version: 2

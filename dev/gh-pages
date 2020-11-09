@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -euo pipefail
+set -euxo pipefail
 
 # stop git prompting us for host authenticity
 mkdir -p ~/.ssh
