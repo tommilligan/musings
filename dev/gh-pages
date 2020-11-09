@@ -1,8 +1,9 @@
 #!/bin/bash
 
-set -ex
+set -euo pipefail
 
 # stop git prompting us for host authenticity
+mkdir -p ~/.ssh
 cat dev/known_hosts >> ~/.ssh/known_hosts
 
 # make a new commit with the static content and push it

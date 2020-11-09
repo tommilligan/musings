@@ -1,4 +1,4 @@
-# Python bugs (explained) in Rust
+# Musings
 
 [![CircleCI branch](https://img.shields.io/circleci/project/github/tommilligan/musings/master.svg)](https://circleci.com/gh/tommilligan/musings)
 
