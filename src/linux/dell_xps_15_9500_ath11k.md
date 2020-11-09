@@ -1,6 +1,6 @@
 # Dell XPS 15 9500 - Making Wi-Fi and Bluetooth Work
 
-This guide covers getting working wifi and bluetooth connectivity on the Dell XPS 15 9500.
+This guide covers getting working wifi and bluetooth connectivity on the Dell XPS 15 9500, which is currently [unsupported in Linux](https://forums.linuxmint.com/viewtopic.php?t=329585).
 
 To clarify some potentially confusing terminology further on:
 
@@ -191,6 +191,8 @@ sudo update-grub
 ```
 
 #### Reboot and enjoy!
+
+**Please note:** Secure Boot was disabled in the BIOS when I did these steps. I believe it may be required, as we're loading unsigned kernel modules at this point. To disable Secure Boot, enter the BIOS using F2 and disable it from the 'Security' menu.
 
 You can now shutdown your laptop. On rebooting, you should see the GRUB menu. Use the arrow keys to select **Advanced**, and then select the entry containing the kernel version (**5.10.0-rc2**).
 
