@@ -1,6 +1,6 @@
-# Dell XPS 15 9500 - Making Wi-Fi and Bluetooth Work
+# Dell XPS 15 9500 - Wi-Fi under Ubuntu 20.04
 
-This guide covers getting working wifi and bluetooth connectivity on the Dell XPS 15 9500, which is currently [unsupported in Linux](https://forums.linuxmint.com/viewtopic.php?t=329585).
+This guide covers getting working wifi and bluetooth connectivity on the Dell XPS 15 9500, which is currently [unsupported in mainline Linux](https://forums.linuxmint.com/viewtopic.php?t=329585), let along Ubuntu 20.04.
 
 To clarify some potentially confusing terminology further on:
 
