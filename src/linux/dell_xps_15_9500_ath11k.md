@@ -119,13 +119,21 @@ $ diff -u /boot/config-5.10.0-051000rc2-generic config-5.10.0-051000rc2-generic-
  CONFIG_FRAME_WARN=1024
 ```
 
-If you would like to rebase these changes on a different config, install a pre-built [mainline kernel](https://kernel.ubuntu.com/~kernel-ppa/mainline/), after which the config will be available in the `/boot` directory.
+If you would like to rebase these changes on a different config, install a pre-built [mainline kernel](https://kernel.ubuntu.com/~kernel-ppa/mainline/), after which the config will be available in the `/boot` directory. You can apply the above changes manually.
 
 #### Build the kernel
+
+Rename the config file you want to use as `.config`, which will then be picked up as part of the build:
+
+```mv
+~/Downloads/config-5.10.0-051000rc2-generic-ath11 linux/.config
+```
 
 Build the kernel with:
 
 ```bash
+cd linux
+
 # add -j 15 as you're probably on the XPS 15 and you can make it go a lot faster
 make
 ```
@@ -186,7 +194,7 @@ sudo update-grub
 
 You can now shutdown your laptop. On rebooting, you should see the GRUB menu. Use the arrow keys to select **Advanced**, and then select the entry containing the kernel version (**5.10.0-rc2**).
 
-On bootup, you should now be able to use wifi via the GNOME GUI!
+On bootup, you should now be able to use wifi via the GNOME GUI.
 
 ## Get missing Bluetooth firmware
 
