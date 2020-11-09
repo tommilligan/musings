@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -ex
+
+# stop git prompting us for host authenticity
+cat dev/known_hosts >> ~/.ssh/known_hosts
+
+# make a new commit with the static content and push it
+cd book
+git init
+git config user.email "circleci@pbir"
+git config user.name "circleci"
+git add .
+git commit -m "book build at $(date -Iseconds) [ci skip]"
+git remote add origin git@github.com:tommilligan/musings
+git push -f origin master:gh-pages

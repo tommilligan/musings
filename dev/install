@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# install mdbook binary here, as we cannot in Cargo.lock
+(command -v mdbook || cargo install --vers "^0.4.4" mdbook)
+
+# optionally update all dependencies within the bin
+# (test -x $HOME/.cargo/bin/cargo-install-update || cargo install cargo-update)
+# cargo install-update -a

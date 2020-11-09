@@ -1,0 +1,8 @@
+[book]
+authors = ["Tom Milligan"]
+multilingual = false
+src = "src"
+title = "Musings"
+
+[output.html.playpen]
+editable = true

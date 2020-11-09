@@ -1,0 +1,42 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/rust:latest
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - cargo-cache-{{ arch }}-{{ checksum "dev/install" }}
+      - run: ./dev/install
+      - run: ./dev/ci
+      - persist_to_workspace:
+          root: .
+          paths:
+            - book
+            - dev
+      - save_cache:
+          paths:
+            - /usr/local/cargo/bin/mdbook
+          key: cargo-cache-{{ arch }}-{{ checksum "dev/install" }}
+  deploy:
+    docker:
+      - image: circleci/rust:latest
+    steps:
+      - attach_workspace:
+          at: .
+      - add_ssh_keys:
+          fingerprints:
+            - "27:02:81:b0:7a:82:e9:39:32:e5:39:65:e5:d8:a5:70"
+      - run: ./dev/gh-pages
+workflows:
+  version: 2
+  build-and-deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            branches:
+              only: master

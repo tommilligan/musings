@@ -1,0 +1,7 @@
+#!/bin/bash
+
+set -euo pipefail
+
+cd "$(dirname "$0")"/..
+
+mdbook serve -p 3011
