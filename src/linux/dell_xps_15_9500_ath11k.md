@@ -158,7 +158,7 @@ And then install as usual packages:
 
 ```bash
 cd ..
-sudo dpgk -i linux-*5.10.0-rc2*.deb
+sudo dpkg -i linux-*5.10.0-rc2*.deb
 ```
 
 #### Update GRUB config
@@ -284,4 +284,76 @@ We can also confirm the issue no longer appears in `dmesg` logs:
 [   17.494711] Bluetooth: hci0: QCA controller version 0x02000200
 [   17.494713] Bluetooth: hci0: QCA Downloading qca/htbtfw20.tlv
 [   17.964791] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+```
+
+## Fix broken NVIDIA modules
+
+Nvidia kernel modules are currently broken after following the above steps. We can see this by running:
+
+```bash
+$ nvidia-smi
+NVIDIA-SMI has failed because it couldn't communicate with the NVIDIA driver. Make sure that the latest NVIDIA driver is installed and running.
+```
+
+To fix this, we can patch the installed driver source files, then trigger DKMS to rebuild the kernel module.
+
+### Patch your local driver source code
+
+Locate your NVIDIA driver source code directory:
+
+```bash
+$ ls /usr/src | grep nvidia
+nvidia-450.80.02
+```
+
+The major version (here, `450`) should match the installed apt package:
+
+```bash
+$ sudo apt list --installed | grep nvidia-dkms
+nvidia-dkms-450/focal-updates,now 450.80.02-0ubuntu0.20.04.2 amd64 [installed,automatic]
+```
+
+If you have a different major version number, you will need to adjust the following commands accordingly. This guide uses `450`.
+
+Download [this patch](./nvidia-fix-linux-5.10.patch) ([original gist](https://gist.github.com/joanbm/beaccedd729589df98332d70a1754e9a#file-nvidia-fix-linux-5-10-patch)), and copy it to the source `patches` directory. Then apply the patch:
+
+```bash
+cd /usr/src/nvidia-450.80.20
+sudo cp ~/Downloads/nvidia-fix-linux-5.10.patch patches
+sudo patch -s -p1 < patches/nvidia-fix-linux-5.10.patch
+```
+
+### Rebuild with DKMS
+
+Now that the source is updated, we need to rebuild and reload the kernel module, which we can do with:
+
+```bash
+sudo dpkg-reconfigure nvidia-dkms-450
+sudo modprobe nvidia
+```
+
+We should now have working NVIDIA kernel modules!
+
+```bash
+$ nvidia-smi
+Wed Nov 25 09:51:23 2020
++-----------------------------------------------------------------------------+
+| NVIDIA-SMI 450.80.02    Driver Version: 450.80.02    CUDA Version: 11.0     |
+|-------------------------------+----------------------+----------------------+
+| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |
+| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |
+|                               |                      |               MIG M. |
+|===============================+======================+======================|
+|   0  GeForce GTX 165...  Off  | 00000000:01:00.0 Off |                  N/A |
+| N/A   54C    P0     6W /  N/A |      0MiB /  3914MiB |      0%      Default |
+|                               |                      |                  N/A |
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+| Processes:                                                                  |
+|  GPU   GI   CI        PID   Type   Process name                  GPU Memory |
+|        ID   ID                                                   Usage      |
+|=============================================================================|
+|  No running processes found                                                 |
++-----------------------------------------------------------------------------+
 ```
